@@ -1,13 +1,33 @@
 <!doctype html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width">
-    <title><%= htmlWebpackPlugin.options.title %></title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width">
+  <title><%= htmlWebpackPlugin.options.title %></title>
 </head>
 <body>
-    <div class="content">
-        <h1>Boilerplate</h1>
+  <div class="wrapper">
+    <div class="header">
+      <div class="arraySize">
+        <span class="alert1">막대 갯수를 정해주세요</span>
+      </div>
+      <div class="selectNum">
+        <input type="number" id="inputNum" min="1" max="20">
+        <button class="addBtn">add</button>
+        <button class="addBtn randomBtn">random</button>
+        <span class="alert2"></span>
+      </div>
+      <div class="selectSort">
+        <div class="bubble">Bubble Sort</div>
+        <div class="insertion">Insertion Sort</div>
+        <div class="merge">Merge Sort</div>
+        <div class="selection">Selection Sort</div>
+      </div>
+      <button class="start">Start!</button>
     </div>
+    <div class="content">
+      <div class="innerBox"></div>
+    </div>
+  </div>
 </body>
 </html>
