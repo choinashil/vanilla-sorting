@@ -348,10 +348,15 @@ function insertionSort(data) {
         // 3-2
         (function(i, j, data) {
           setTimeout(function() {
-            console.log('3-2. 비교한값 올리기', '/i:'+i, '/j:'+j, '/j+1:'+(j+1), 'j값:'+data[j], 'j+1값:'+data[j+1]);
+            console.log('3-2. 또 작은 값 있나', '/i:'+i, '/j:'+j, '/j+1:'+(j+1), 'j값:'+data[j], 'j+1값:'+data[j+1]);
             console.log(data);
             debugger
-            innerBox.children[j+1].classList.remove('goDown');
+
+            // 엘리먼트 내부에서 자리 옮기기
+            var target = innerBox.children[j+1]; // biggest
+            var target2 = innerBox.children[j]; // 비교대상
+            innerBox.insertBefore(target, target2);
+
 
             innerBox.children[j].classList.remove('deepAqua');
             innerBox.children[j].classList.add('aqua');
@@ -371,17 +376,27 @@ function insertionSort(data) {
             console.log(data);
             debugger
             // 이미 색깔 되어있는 경우 패스 (if문에서 한번 넘어온 경우)
+            if (innerBox.children[j+2].classList.contains('goDown')) {
 
-            // 처음에 바로 else 로 넘어온 경우 색깔 지정
-            if (innerBox.children[j].classList.contains('grey')) {
-              innerBox.children[j].classList.remove('grey');
+              innerBox.children[j].classList.remove('aqua');
+              innerBox.children[j].classList.add('deepAqua');
+
             } else {
-              innerBox.children[j].classList.remove('purple');
-            }
 
-            innerBox.children[j].classList.add('deepAqua');
-            innerBox.children[j+1].classList.remove('grey');
-            innerBox.children[j+1].classList.add('purple');
+              // 처음에 바로 else 로 넘어온 경우 색깔 지정
+              if (innerBox.children[j].classList.contains('grey')) {
+                innerBox.children[j].classList.remove('grey');
+              } else if (innerBox.children[j].classList.contains('purple')){
+                innerBox.children[j].classList.remove('purple');
+              } else {
+                innerBox.children[j].classList.remove('aqua');
+              }
+
+              innerBox.children[j].classList.add('deepAqua');
+              innerBox.children[j+1].classList.remove('grey');
+              innerBox.children[j+1].classList.add('purple');
+
+            }
 
           }, time * counter);
           // counter++;
@@ -400,19 +415,6 @@ function insertionSort(data) {
             if (!innerBox.children[j+1].classList.contains('goDown')) {
               innerBox.children[j+1].classList.add('goDown');
             }
-
-          }, time * counter);
-          counter++;
-        })(i, j, data.slice());
-
-        // 6
-        (function(i, j, data) {
-          setTimeout(function() {
-            console.log('6. else니까 자리안바꿈', '/i:'+i, '/j:'+j, '/j+1:'+(j+1), 'j값:'+data[j], 'j+1값:'+data[j+1]);
-            console.log(data);
-            debugger
-            // innerBox.children[j].classList.add('bounce');
-            // innerBox.children[j+1].classList.add('bounce');
 
           }, time * counter);
           counter++;
@@ -440,6 +442,13 @@ function insertionSort(data) {
         console.log('8. 초기화', '/i:'+i, '/j:'+j, '/j+1:'+(j+1), 'j값:'+data[j], 'j+1값:'+data[j+1]);
         console.log(data);
         debugger
+
+
+        if (innerBox.children[j+1].classList.contains('goDown')) {
+          innerBox.children[j+1].classList.remove('goDown');
+        }
+
+
         var k=j+2
         // 자리바꾼뒤 넘어왔을때 안보이게 요소 이동
         if (innerBox.children[j+1].classList.contains('left'+k)) {
@@ -450,11 +459,15 @@ function insertionSort(data) {
           innerBox.children[j+1].classList.remove('purple');
           innerBox.children[j+1].classList.add('aqua');
 
-        } else {
+        } else if (j === -1) {
+          innerBox.children[j+1].classList.remove('purple');
+          innerBox.children[j+1].classList.add('aqua');
+          innerBox.children[j+2].classList.remove('deepAqua');
+          innerBox.children[j+2].classList.add('aqua');
+        }else {
 
           innerBox.children[j].classList.remove('deepAqua');
           innerBox.children[j].classList.add('aqua');
-
         }
 
       }, time * counter);
