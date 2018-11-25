@@ -143,12 +143,11 @@ function addRandomNum(e) {
   }
 }
 
-var time = 500;
+var time = 400;
 var counter = 0;
 
 
 function bubbleSort(data) {
-  var time = 400;
   for (var i=data.length; i>0; i--){
     for(var j=0; j<i-1; j++) {
       if (data[j] > data[j+1]) {
@@ -288,107 +287,191 @@ function insertionSort(data) {
     var temp = data[i];
     for (var j = i - 1; j >= 0; j--) {
 
-      if (temp < data[j]) {
+      if (data[j] > temp) {
         data[j+1] = data[j];
         data[j] = temp;
 
       // case if
         // 1
-        (function(j) {
+        (function(i, j, data) {
           setTimeout(function() {
-            console.log('i: '+i, 'j: '+j)
-            // debugger
-            innerBox.children[j+1].style.backgroundColor = '#cfc2f0';
-            innerBox.children[j].style.backgroundColor = '#9bd9df';
+            console.log('1. if일때 색깔지정', '/i:'+i, '/j:'+j, '/j+1:'+(j+1), 'j값:'+data[j], 'j+1값:'+data[j+1])
+            console.log(data);
+            debugger
+            // 맨처음 i =1일때
+            // j는 비교대상 , j+1는 주인공 temp
+            if (innerBox.children[j].classList.contains('grey')) {
+              innerBox.children[j].classList.remove('grey');
+            } else if (innerBox.children[j].classList.contains('purple')){
+              innerBox.children[j].classList.remove('purple');
+            } else {
+              innerBox.children[j].classList.remove('aqua');
+            }
+            innerBox.children[j].classList.add('deepAqua');
+            innerBox.children[j+1].classList.remove('grey');
+            innerBox.children[j+1].classList.add('purple');
 
           }, time * counter);
           counter++;
-        })(j);
+        })(i, j, data.slice());
 
         // 2
-        (function(j) {
+        (function(i, j, data) {
           setTimeout(function() {
-            console.log('i: '+i, 'j: '+j)
-            // debugger
-
-            innerBox.children[j+1].style.transform = 'translateY(100%)';
+            console.log('2. 비교할값 내리기', '/i:'+i, '/j:'+j, '/j+1:'+(j+1), 'j값:'+data[j], 'j+1값:'+data[j+1]);
+            console.log(data);
+            debugger
+            innerBox.children[j+1].classList.add('goDown');
 
           }, time * counter);
           counter++;
-        })(j);
+        })(i, j, data.slice());
 
         // 3
-        (function(data, j) {
+        (function(i, j, data) {
           setTimeout(function() {
-            console.log('i: '+i, 'j: '+j)
-            // debugger
-            var target = innerBox.children[j+1]; // biggest
-            var target2 = innerBox.children[j]; // 비교대상
-            innerBox.insertBefore(target, target2);
-            innerBox.children[j+1].style.backgroundColor = '#c7c7c7';
+            console.log('3. 들어갈곳 찾아 이동', '/i:'+i, '/j:'+j, '/j+1:'+(j+1), 'j값:'+data[j], 'j+1값:'+data[j+1]);
+            console.log(data);
+            debugger
+
+            var k = j+1;
+            innerBox.children[j].classList.remove('left'+j);
+            innerBox.children[j+1].classList.remove('left'+k);
+            innerBox.children[j].classList.add('left'+k);
+            innerBox.children[j+1].classList.add('left'+j);
+
 
           }, time * counter);
           counter++;
-        })(data, j);
+        })(i, j, data.slice());
+
+        // 3-2
+        (function(i, j, data) {
+          setTimeout(function() {
+            console.log('3-2. 비교한값 올리기', '/i:'+i, '/j:'+j, '/j+1:'+(j+1), 'j값:'+data[j], 'j+1값:'+data[j+1]);
+            console.log(data);
+            debugger
+            innerBox.children[j+1].classList.remove('goDown');
+
+            innerBox.children[j].classList.remove('deepAqua');
+            innerBox.children[j].classList.add('aqua');
+
+          }, time * counter);
+          counter++;
+        })(i, j, data.slice());
 
       } else {
         // case else
 
 
         // 4
-        (function(j) {
+        (function(i, j, data) {
           setTimeout(function() {
-            console.log('i: '+i, 'j: '+j)
-            // debugger
-            innerBox.children[j].style.backgroundColor = '#9bd9df';
-            innerBox.children[j+1].style.backgroundColor = '#cfc2f0';
+            console.log('4. else일때 색깔넣기', '/i:'+i, '/j:'+j, '/j+1:'+(j+1), 'j값:'+data[j], 'j+1값:'+data[j+1]);
+            console.log(data);
+            debugger
+            // 이미 색깔 되어있는 경우 패스 (if문에서 한번 넘어온 경우)
+
+            // 처음에 바로 else 로 넘어온 경우 색깔 지정
+            if (innerBox.children[j].classList.contains('grey')) {
+              innerBox.children[j].classList.remove('grey');
+            } else {
+              innerBox.children[j].classList.remove('purple');
+            }
+
+            innerBox.children[j].classList.add('deepAqua');
+            innerBox.children[j+1].classList.remove('grey');
+            innerBox.children[j+1].classList.add('purple');
 
           }, time * counter);
           // counter++;
-        })(j);
+        })(i, j, data.slice());
 
 
         // 5
-        (function(j) {
+        (function(i, j, data) {
           setTimeout(function() {
-            console.log('i: '+i, 'j: '+j)
-            // debugger
+            console.log('5. 비교할값 내리기', '/i:'+i, '/j:'+j, '/j+1:'+(j+1), 'j값:'+data[j], 'j+1값:'+data[j+1]);
+            console.log(data);
+            debugger
+            // if문에서 넘어온 경우 필요없음 ... 옆으로 이동해야하나?
 
-            innerBox.children[j+1].style.transform = 'translateY(100%)';
+            // 처음에 바로 else로 넘어온 경우 내리기
+            if (!innerBox.children[j+1].classList.contains('goDown')) {
+              innerBox.children[j+1].classList.add('goDown');
+            }
 
           }, time * counter);
           counter++;
-        })(j);
+        })(i, j, data.slice());
 
         // 6
-        (function(j) {
+        (function(i, j, data) {
           setTimeout(function() {
-            console.log('i: '+i, 'j: '+j)
-            // debugger
-            innerBox.children[j+1].style.transform = 'translateY(0%)';
-            innerBox.children[j+1].style.backgroundColor = '#c7c7c7';
-            innerBox.children[j].style.backgroundColor = '#c7c7c7';
+            console.log('6. else니까 자리안바꿈', '/i:'+i, '/j:'+j, '/j+1:'+(j+1), 'j값:'+data[j], 'j+1값:'+data[j+1]);
+            console.log(data);
+            debugger
+            // innerBox.children[j].classList.add('bounce');
+            // innerBox.children[j+1].classList.add('bounce');
 
           }, time * counter);
           counter++;
-        })(j);
+        })(i, j, data.slice());
+
+        // 7
+        (function(i, j, data) {
+          setTimeout(function() {
+            console.log('7. 원래대로 올리기', '/i:'+i, '/j:'+j, '/j+1:'+(j+1), 'j값:'+data[j], 'j+1값:'+data[j+1]);
+            console.log(data);
+            debugger
+            innerBox.children[j+1].classList.remove('goDown');
+
+          }, time * counter);
+          counter++;
+        })(i, j, data.slice());
         break;
 
       }
 
     }
-    // 7
-    (function(j) {
+    // 8
+    (function(i, j, data) {
       setTimeout(function() {
-        console.log('i: '+i, 'j: '+j)
-        // debugger
-        innerBox.children[j+1].style.transform = 'translateY(0%)';
-        innerBox.children[j+1].style.backgroundColor = '#c7c7c7';
+        console.log('8. 초기화', '/i:'+i, '/j:'+j, '/j+1:'+(j+1), 'j값:'+data[j], 'j+1값:'+data[j+1]);
+        console.log(data);
+        debugger
+        var k=j+2
+        // 자리바꾼뒤 넘어왔을때 안보이게 요소 이동
+        if (innerBox.children[j+1].classList.contains('left'+k)) {
+          var target = innerBox.children[j+2]; // biggest
+          var target2 = innerBox.children[j+1]; // 비교대상
+          innerBox.insertBefore(target, target2);
+
+          innerBox.children[j+1].classList.remove('purple');
+          innerBox.children[j+1].classList.add('aqua');
+
+        } else {
+
+          innerBox.children[j].classList.remove('deepAqua');
+          innerBox.children[j].classList.add('aqua');
+
+        }
 
       }, time * counter);
       counter++;
-    })(j);
+    })(i, j, data.slice());
   }
+
+  // 9
+  (function(i, j, data) {
+    setTimeout(function() {
+      console.log('9. 맨마지막', '/i:'+i, '/j:'+j, '/j+1:'+(j+1), 'j값:'+data[j], 'j+1값:'+data[j+1]);
+      console.log(data);
+      debugger
+    }, time * counter);
+    counter++;
+  })(i, j, data.slice());
+
   return data;
 }
 
@@ -402,7 +485,7 @@ function selectionSort(data){
         debugger
         console.log('1. i바뀜', 'i:'+i);
         innerBox.children[i].classList.add('upDown');
-        innerBox.children[i].classList.add('yellow');
+        innerBox.children[i].classList.add('purple');
       }, time * counter);
       counter++;
     })(i, j);
@@ -418,10 +501,10 @@ function selectionSort(data){
           // console.log(data);
           if (data[j] < data[min]) {
 
-            innerBox.children[min].classList.remove('yellow');
+            innerBox.children[min].classList.remove('purple');
             innerBox.children[min].classList.add('grey');
             innerBox.children[j].classList.remove('grey');
-            innerBox.children[j].classList.add('yellow');
+            innerBox.children[j].classList.add('purple');
             innerBox.children[j].classList.add('upDown');
             j = min;
           }
@@ -444,7 +527,7 @@ function selectionSort(data){
     //     console.log('3. min발견', 'i: '+i, 'j: '+j, 'min: '+min);
     //
     //     innerBox.children[min].classList.remove('grey');
-    //     innerBox.children[min].classList.add('yellow');
+    //     innerBox.children[min].classList.add('purple');
     //   }, time * counter);
     //   counter++;
     // })(i, j, min, data.slice());
@@ -501,7 +584,9 @@ function selectionSort(data){
         innerBox.children[min].classList.remove('left'+min);
         innerBox.children[i].classList.remove('left'+i);
         innerBox.children[min].classList.add('left'+i);
+        innerBox.children[min].classList.add('jump');
         innerBox.children[i].classList.add('left'+min);
+        innerBox.children[i].classList.add('jump');
 
 
 
@@ -515,6 +600,8 @@ function selectionSort(data){
       setTimeout(function() {
         debugger
         console.log('6. 초기화', 'i: '+i, 'min: '+min);
+        innerBox.children[i].classList.remove('jump');
+        innerBox.children[min].classList.remove('jump');
 
         var target = innerBox.children[min]; // smallest
         var target2 = innerBox.children[i]; // 비교대상
@@ -524,15 +611,23 @@ function selectionSort(data){
 
         if (i === min) {
           innerBox.children[min].classList.remove('darkgrey');
-          innerBox.children[min].classList.add('orange');
+          innerBox.children[min].classList.add('aqua');
         } else {
           innerBox.children[min].classList.remove('darkgrey');
           innerBox.children[min].classList.add('grey');
         }
 
-        innerBox.children[i].classList.remove('yellow');
-        innerBox.children[i].classList.add('orange');
+      }, time * counter);
+      counter++;
+    })(i, j, min, data.slice());
 
+    (function(i, j, min, data) {
+      setTimeout(function() {
+        debugger
+        console.log('8. 마지막 바 색깔', 'i: '+i, 'min: '+min);
+
+        innerBox.children[i].classList.remove('purple');
+        innerBox.children[i].classList.add('aqua');
 
       }, time * counter);
       counter++;
@@ -548,7 +643,18 @@ function selectionSort(data){
 
       innerBox.children[min].classList.remove('grey');
       innerBox.children[i].classList.remove('grey');
-      innerBox.children[i].classList.add('orange');
+      innerBox.children[i].classList.add('aqua');
+      innerBox.children[i].classList.add('jump');
+
+    }, time * counter);
+    counter++;
+  })(i, j, min, data.slice());
+
+  (function(i, j, min, data) {
+    setTimeout(function() {
+      debugger
+      console.log('8. 마지막 바 색깔', 'i: '+i, 'min: '+min);
+      innerBox.children[i].classList.remove('jump');
 
     }, time * counter);
     counter++;
