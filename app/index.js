@@ -20,7 +20,7 @@ var arraySize = document.querySelector('.arraySize');
 for (var i=0; i<6; i++) {
   var count = document.createElement('div');
   count.classList.add('count');
-  count.textContent = i+5;
+  count.textContent = i + 5;
   count.addEventListener('click', setArraySize);
   arraySize.appendChild(count);
 }
@@ -79,13 +79,8 @@ function setArraySize(e) {
   limit = e.target.textContent;
   console.log(limit);
   readyToStart[0] = 'true';
-  innerBox.style.width = (limit*56) + 'px';
-
-  // for (var i = 0; i < limit; i++) {
-  //   inputBar = document.createElement('div');
-  //   inputBar.classList.add('inputBar', i);
-  //   content.appendChild(inputBar);
-  // }
+  console.log(readyToStart);
+  innerBox.style.width = (limit * 56) + 'px';
 }
 
 
@@ -105,7 +100,7 @@ function addNum(e) {
       alert('모두 선택하셨습니다');
     }
   } else {
-    alert_1();
+    alert_selectRange();
   }
 }
 
@@ -308,8 +303,12 @@ function insertionSort(data) {
               innerBox.children[j].classList.remove('aqua');
             }
             innerBox.children[j].classList.add('deepAqua');
-            innerBox.children[j+1].classList.remove('grey');
-            innerBox.children[j+1].classList.add('purple');
+
+            if(innerBox.children[j+1].classList.contains('grey')) {
+              innerBox.children[j+1].classList.remove('grey');
+              innerBox.children[j+1].classList.add('purple');
+            }
+
 
           }, time * counter);
           counter++;
@@ -321,7 +320,9 @@ function insertionSort(data) {
             console.log('2. 비교할값 내리기', '/i:'+i, '/j:'+j, '/j+1:'+(j+1), 'j값:'+data[j], 'j+1값:'+data[j+1]);
             console.log(data);
             debugger
+
             innerBox.children[j+1].classList.add('goDown');
+
 
           }, time * counter);
           counter++;
@@ -348,7 +349,7 @@ function insertionSort(data) {
         // 3-2
         (function(i, j, data) {
           setTimeout(function() {
-            console.log('3-2. 또 작은 값 있나', '/i:'+i, '/j:'+j, '/j+1:'+(j+1), 'j값:'+data[j], 'j+1값:'+data[j+1]);
+            console.log('3-2. 내부에서 자리옮김->없애기', '/i:'+i, '/j:'+j, '/j+1:'+(j+1), 'j값:'+data[j], 'j+1값:'+data[j+1]);
             console.log(data);
             debugger
 
@@ -358,8 +359,8 @@ function insertionSort(data) {
             innerBox.insertBefore(target, target2);
 
 
-            innerBox.children[j].classList.remove('deepAqua');
-            innerBox.children[j].classList.add('aqua');
+            innerBox.children[j+1].classList.remove('deepAqua');
+            innerBox.children[j+1].classList.add('aqua');
 
           }, time * counter);
           counter++;
@@ -376,12 +377,12 @@ function insertionSort(data) {
             console.log(data);
             debugger
             // 이미 색깔 되어있는 경우 패스 (if문에서 한번 넘어온 경우)
-            if (innerBox.children[j+2].classList.contains('goDown')) {
-
-              innerBox.children[j].classList.remove('aqua');
-              innerBox.children[j].classList.add('deepAqua');
-
-            } else {
+            // if (data[j] < data[j+1]) {
+            //
+            //   innerBox.children[j].classList.remove('aqua');
+            //   innerBox.children[j].classList.add('deepAqua');
+            //
+            // } else {
 
               // 처음에 바로 else 로 넘어온 경우 색깔 지정
               if (innerBox.children[j].classList.contains('grey')) {
@@ -393,13 +394,16 @@ function insertionSort(data) {
               }
 
               innerBox.children[j].classList.add('deepAqua');
-              innerBox.children[j+1].classList.remove('grey');
-              innerBox.children[j+1].classList.add('purple');
 
-            }
+              if(innerBox.children[j+1].classList.contains('grey')) {
+                innerBox.children[j+1].classList.remove('grey');
+                innerBox.children[j+1].classList.add('purple');
+              }
+
+            // }
 
           }, time * counter);
-          // counter++;
+          counter++;
         })(i, j, data.slice());
 
 
@@ -428,6 +432,7 @@ function insertionSort(data) {
             debugger
             innerBox.children[j+1].classList.remove('goDown');
 
+
           }, time * counter);
           counter++;
         })(i, j, data.slice());
@@ -442,6 +447,18 @@ function insertionSort(data) {
         console.log('8. 초기화', '/i:'+i, '/j:'+j, '/j+1:'+(j+1), 'j값:'+data[j], 'j+1값:'+data[j+1]);
         console.log(data);
         debugger
+
+        // 엘리먼트 내부에서 자리 옮기기
+        // var target = innerBox.children[j+2]; // biggest
+        // var target2 = innerBox.children[j+1]; // 비교대상
+        // innerBox.insertBefore(target, target2);
+        // innerBox.children[j+1].classList.remove('deepAqua');
+        // innerBox.children[j+1].classList.add('aqua');
+
+        if (innerBox.children[j+1].classList.contains('purple')) {
+          innerBox.children[j+1].classList.remove('purple');
+          innerBox.children[j+1].classList.add('aqua');
+        }
 
 
         if (innerBox.children[j+1].classList.contains('goDown')) {
@@ -462,8 +479,8 @@ function insertionSort(data) {
         } else if (j === -1) {
           innerBox.children[j+1].classList.remove('purple');
           innerBox.children[j+1].classList.add('aqua');
-          innerBox.children[j+2].classList.remove('deepAqua');
-          innerBox.children[j+2].classList.add('aqua');
+          // innerBox.children[j+2].classList.remove('deepAqua');
+          // innerBox.children[j+2].classList.add('aqua');
         }else {
 
           innerBox.children[j].classList.remove('deepAqua');
@@ -481,6 +498,8 @@ function insertionSort(data) {
       console.log('9. 맨마지막', '/i:'+i, '/j:'+j, '/j+1:'+(j+1), 'j값:'+data[j], 'j+1값:'+data[j+1]);
       console.log(data);
       debugger
+      innerBox.children[j+1].classList.remove('purple');
+      innerBox.children[j+1].classList.add('aqua');
     }, time * counter);
     counter++;
   })(i, j, data.slice());
@@ -677,7 +696,7 @@ function selectionSort(data){
 }
 
 
-function alert_1() {
+function alert_selectRange() {
   alert1 = document.querySelector('.alert1');
   alert1.style.visibility = 'visible';
 }
