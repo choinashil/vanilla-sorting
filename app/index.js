@@ -4,22 +4,19 @@ import 'styles/index.less';
 // ================================
 // START YOUR APP HERE
 // ================================
-var data = [];
-var n=0;
 var limit;
-
 var inputBar;
-var alert1;
-
 var executeFunction;
 
+var n = 0;
+var data = [];
 var readyToStart = [false, false, false];
+var started = false;
 
-// 맨 위 초록부분 세팅
 var arraySize = document.querySelector('.arraySize');
-for (var i=0; i<6; i++) {
+for (var i = 0; i < 6; i++) {
   var count = document.createElement('div');
-  count.classList.add('count');
+  count.classList.add('count', 'lightGreen');
   count.textContent = i + 5;
   count.addEventListener('click', setArraySize);
   arraySize.appendChild(count);
@@ -32,28 +29,20 @@ addBtn.addEventListener('click', addNum);
 var randomBtn = document.querySelector('.randomBtn');
 randomBtn.addEventListener('click', addRandomNum);
 
+var selectSort = document.querySelector('.selectSort');
+
 var bubble = document.querySelector('.bubble');
-bubble.addEventListener('click', function(e){
-  e.target.style.backgroundColor = '#22499f';
-  executeFunction = bubbleSort.bind(null, data, data.length-1);
-  readyToStart[2] = 'true';
-  // console.log(readyToStart);
-});
+bubble.addEventListener('click', setSorting.bind(null, bubbleSort));
 
 var insertion = document.querySelector('.insertion');
-insertion.addEventListener('click', function(e){
-  e.target.style.backgroundColor = '#22499f';
-  executeFunction = insertionSort.bind(null, data);
-  readyToStart[2] = 'true';
-});
-
-var merge = document.querySelector('.merge');
+insertion.addEventListener('click', setSorting.bind(null, insertionSort));
 
 var selection = document.querySelector('.selection');
-selection.addEventListener('click', function(e){
-  e.target.style.backgroundColor = '#22499f';
-  executeFunction = selectionSort.bind(null, data);
-  readyToStart[2] = 'true';
+selection.addEventListener('click', setSorting.bind(null, selectionSort));
+
+var merge = document.querySelector('.merge');
+merge.addEventListener('click', function(e){
+  if (!started) alert('준비중입니다!');
 });
 
 var content = document.querySelector('.content');
@@ -61,90 +50,122 @@ var innerBox = document.querySelector('.innerBox');
 var inputNumBox = document.querySelector('.inputNumBox');
 
 var start = document.querySelector('.start');
-start.addEventListener('click', function(){
-  // if (readyToStart.every(function(flag){flag === true})) {
-  executeFunction();
-  // } else {
-  //   alert('조건을 모두 선택하세요');
-  // }
-
-});
-
-
+start.addEventListener('click', startSorting);
 
 
 
 function setArraySize(e) {
-  e.target.style.backgroundColor = '#228b62';
-  limit = e.target.textContent;
-  console.log(limit);
-  readyToStart[0] = 'true';
-  console.log(readyToStart);
-  innerBox.style.width = (limit * 56) + 'px';
+  if (!innerBox.childElementCount) {
+    for(var i = 0; i < arraySize.childElementCount; i++) {
+      if (arraySize.children[i].classList.contains('green')) {
+        console.log(arraySize.children[i])
+        arraySize.children[i].classList.remove('green');
+        arraySize.children[i].classList.add('lightGreen');
+      }
+    }
+    e.target.classList.remove('lightGreen');
+    e.target.classList.add('green');
+    limit = e.target.textContent;
+    readyToStart[0] = 'true';
+    innerBox.style.width = (limit * 56) + 'px';
+    console.log(limit);
+    console.log(readyToStart);
+  }
 }
 
 
 function addNum(e) {
-  readyToStart[1] = 'true';
-  var inputVal = Number(inputNum.value);
-  if (limit) {
-    if (data.length < limit) {
-      if (data.includes(inputVal)) {
-        alert('중복되는 숫자는 입력하실 수 없습니다');
-      } else if (inputVal > 20 || inputVal <= 0) {
-        alert('1부터 20사이의 정수를 입력해주세요');
+  if (!started) {
+    readyToStart[1] = 'true';
+    console.log(readyToStart);
+    var inputVal = Number(inputNum.value);
+    if (limit) {
+      if (data.length < limit) {
+        if (data.includes(inputVal)) {
+          alert('중복되는 숫자는 입력하실 수 없습니다');
+        } else if (inputVal > 20 || inputVal <= 0) {
+          alert('1부터 20사이의 정수를 입력해주세요');
+        } else {
+          addNumToBar(inputVal);
+        }
       } else {
-        addNumToBar(inputVal);
+        alert('모두 선택하셨습니다');
       }
     } else {
-      alert('모두 선택하셨습니다');
+      alert('입력할 숫자 갯수를 먼저 선택해주세요');
     }
-  } else {
-    alert_selectRange();
+  }
+}
+
+function addRandomNum(e) {
+  if (!started) {
+    readyToStart[1] = 'true';
+    console.log(readyToStart);
+
+    pushRandomNum();
+
+    function pushRandomNum(){
+      var randomNum = Math.ceil(Math.random() * 20);
+      while(innerBox.childElementCount < limit) {
+        if (data.includes(randomNum)) {
+          pushRandomNum();
+        } else {
+          addNumToBar(randomNum);
+        }
+      }
+    }
   }
 }
 
 function addNumToBar(num){
   data.push(num);
   inputBar = document.createElement('div');
-  inputBar.classList.add('inputBar', 'grey', 'left'+n);
-  inputBar.style.height = (data[n] * 12) + 'px';
-  // if (num < 4) {
-    inputNumBox = document.createElement('div');
-    inputNumBox.classList.add('inputNumBox');
-    inputNumBox.textContent = num;
-    inputBar.appendChild(inputNumBox);
-  // } else {
-  //   inputBar.textContent = num;
-  // }
+  inputBar.classList.add('inputBar', 'grey', 'left' + n);
+  inputBar.style.height = (data[n] * 10) + 'px';
+  inputNumBox = document.createElement('div');
+  inputNumBox.classList.add('inputNumBox');
+  inputNumBox.textContent = num;
+  inputBar.appendChild(inputNumBox);
   innerBox.appendChild(inputBar);
   console.log(data);
   n++;
 }
 
-function addRandomNum(e) {
-  var randomNum = Math.ceil(Math.random() * 20);
-  readyToStart[1] = 'true';
-  // console.log(readyToStart);
-
-  if (limit) {
-    if (data.length < limit) {
-      if (!data.includes(randomNum)) {
-        addNumToBar(randomNum);
+function setSorting(sort, e) {
+  if (!started) {
+    for(var i = 0; i < selectSort.childElementCount; i++) {
+      if (selectSort.children[i].classList.contains('deepBlue')) {
+        console.log(selectSort.children[i])
+        selectSort.children[i].classList.remove('deepBlue');
+        selectSort.children[i].classList.add('lightBlue');
       }
-    } else {
-      alert('모두 선택하셨습니다');
     }
+    e.target.classList.remove('lightBlue');
+    e.target.classList.add('deepBlue');
+    executeFunction = sort;
+    readyToStart[2] = 'true';
+    console.log(readyToStart);
   }
 }
+
+function startSorting(){
+  console.log(readyToStart);
+  // if (readyToStart.every(function(flag){flag === true})) {
+    started = true;
+    executeFunction(data);
+  // } else {
+  //   console.log(readyToStart);
+  //   alert('조건을 모두 선택하세요');
+  // }
+}
+
 
 var time = 400;
 var counter = 0;
 
-
 function bubbleSort(data) {
-  for (var i=data.length; i>0; i--){
-    for(var j=0; j<i-1; j++) {
+  for (var i = data.length; i > 0; i--){
+    for (var j = 0; j < i - 1; j++) {
       if (data[j] > data[j+1]) {
         var temp = data[j];
         data[j] = data[j+1];
@@ -695,11 +716,6 @@ function selectionSort(data){
   return data;
 }
 
-
-function alert_selectRange() {
-  alert1 = document.querySelector('.alert1');
-  alert1.style.visibility = 'visible';
-}
 
 function swap(j){
   var target = innerBox.children[j+1]; // biggest
