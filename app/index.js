@@ -10,7 +10,9 @@ var executeFunction;
 
 var n = 0;
 var data = [];
-var readyToStart = [false, false, false];
+var setRange = false;
+var setNum = false;
+var selectSortType = false;
 var started = false;
 
 var arraySize = document.querySelector('.arraySize');
@@ -32,7 +34,7 @@ randomBtn.addEventListener('click', addRandomNum);
 var selectSort = document.querySelector('.selectSort');
 
 var bubble = document.querySelector('.bubble');
-bubble.addEventListener('click', setSorting.bind(null, bubbleSort));
+bubble.addEventListener('click', setSorting.bind(null,bubbleSort));
 
 var insertion = document.querySelector('.insertion');
 insertion.addEventListener('click', setSorting.bind(null, insertionSort));
@@ -41,9 +43,21 @@ var selection = document.querySelector('.selection');
 selection.addEventListener('click', setSorting.bind(null, selectionSort));
 
 var merge = document.querySelector('.merge');
-merge.addEventListener('click', function(e){
-  if (!started) alert('준비중입니다!');
-});
+merge.addEventListener('click', setSorting.bind(null, mergeSort));
+
+  // sizeControlForMergeSort();
+// function sizeControlForMergeSort() {
+//   innerBox.style.width = (limit * 31) + 'px';
+//   innerBox.classList.remove('innerBoxHeight');
+//   innerBox.classList.add('innerBoxHeightForMergeSort');
+//   for (var i = 0; i < innerBox.childElementCount; i++) {
+//     innerBox.children[i].classList.remove('left' + i);
+//     innerBox.children[i].classList.add('mergeLeft' + i);
+//     innerBox.children[i].classList.remove('inputBarWidth');
+//     innerBox.children[i].classList.add('inputBarWidthForMergeSort');
+//     innerBox.children[i].height = (data[i] * 5) + 'px';
+//   }
+// }
 
 var content = document.querySelector('.content');
 var innerBox = document.querySelector('.innerBox');
@@ -64,14 +78,15 @@ function setArraySize(e) {
     e.target.classList.remove('lightGreen');
     e.target.classList.add('green');
     limit = e.target.textContent;
-    readyToStart[0] = true;
+    console.log(limit);
+    setRange = true;
     innerBox.style.width = (limit * 56) + 'px';
   }
 }
 
 function addNum(e) {
   if (!started) {
-    readyToStart[1] = true;
+    setNum = true;
     var inputVal = Number(inputNum.value);
     if (limit) {
       if (data.length < limit) {
@@ -94,7 +109,7 @@ function addNum(e) {
 function addRandomNum(e) {
   if (!started) {
     if (limit) {
-      readyToStart[1] = true;
+      setNum = true;
 
       pushRandomNum();
 
@@ -117,7 +132,7 @@ function addRandomNum(e) {
 function addNumToBar(num){
   data.push(num);
   inputBar = document.createElement('div');
-  inputBar.classList.add('inputBar', 'grey', 'left' + n);
+  inputBar.classList.add('inputBar', 'inputBarWidth', 'grey', 'left' + n);
   inputBar.style.height = (data[n] * 10) + 'px';
   inputNumBox = document.createElement('div');
   inputNumBox.classList.add('inputNumBox');
@@ -138,13 +153,12 @@ function setSorting(sort, e) {
     e.target.classList.remove('lightBlue');
     e.target.classList.add('deepBlue');
     executeFunction = sort;
-    readyToStart[2] = true;
+    selectSortType = true;
   }
 }
 
 function startSorting(){
-  console.log(readyToStart);
-  if (readyToStart.every(function(flag) {return flag === true})) {
+  if (setRange === true && setNum === true && selectSortType === true) {
     started = true;
     executeFunction(data);
   } else {
@@ -265,8 +279,8 @@ function resetForNextComparison(j) {
     innerBox.children[j].classList.remove('jump');
     innerBox.children[j + 1].classList.remove('jump');
     var target = innerBox.children[j + 1];
-    var target2 = innerBox.children[j];
-    innerBox.insertBefore(target, target2);
+    var valueToCompare = innerBox.children[j];
+    innerBox.insertBefore(target, valueToCompare);
   }
   innerBox.children[j].classList.remove('purple');
   innerBox.children[j].classList.add('grey');
@@ -396,8 +410,8 @@ function addPutDownEffect(j) {
 
 function resetComparedBar(j) {
   var target = innerBox.children[j + 1];
-  var target2 = innerBox.children[j];
-  innerBox.insertBefore(target, target2);
+  var valueToCompare = innerBox.children[j];
+  innerBox.insertBefore(target, valueToCompare);
 
   innerBox.children[j + 1].classList.remove('deepYellow');
   innerBox.children[j + 1].classList.add('yellow');
@@ -420,8 +434,8 @@ function resetAll(j) {
   var k = j + 2;
   if (innerBox.children[j + 1].classList.contains('left' + k)) {
     var target = innerBox.children[j + 2];
-    var target2 = innerBox.children[j + 1];
-    innerBox.insertBefore(target, target2);
+    var valueToCompare = innerBox.children[j + 1];
+    innerBox.insertBefore(target, valueToCompare);
 
     innerBox.children[j + 1].classList.remove('purple');
     innerBox.children[j + 1].classList.add('yellow');
@@ -558,10 +572,10 @@ function resetForNextStep(i, min) {
   innerBox.children[min].classList.remove('jump');
 
   var target = innerBox.children[min];
-  var target2 = innerBox.children[i];
-  var target3 = innerBox.children[min + 1];
-  innerBox.insertBefore(target, target2);
-  innerBox.insertBefore(target2, target3);
+  var valueToChange = innerBox.children[i];
+  var valueToHelpChange = innerBox.children[min + 1];
+  innerBox.insertBefore(target, valueToChange);
+  innerBox.insertBefore(valueToChange, valueToHelpChange);
 
   if (i === min) {
     innerBox.children[min].classList.remove('darkgrey');
@@ -587,3 +601,251 @@ function addEffect(i, min) {
 function removeEffect(i) {
   innerBox.children[i].classList.remove('jump');
 }
+
+
+var queue = [];
+
+function mergeSort(data) {
+  // console.log('0. ', '시작')
+  if (data.length === 1) {
+
+  //   (function(data, start, middle, end) {
+  //     setTimeout(function() {
+  //       console.log('1. 하나만 남았을때', 'data:'+data, 'start:'+start, 'middle:'+middle, 'end:'+end);
+  //       debugger
+  //     }, time * counter);
+  //     counter++;
+  //   })(data.slice(), start, middle, end);
+  //
+  //   return data;
+  // }
+
+
+  var start = 0;
+  var end = data.length;
+  var middle = Math.ceil((start + end) / 2);
+
+  (function(data, start, middle, end) {
+    setTimeout(function() {
+      console.log('2. ', 'data:'+data, 'start:'+start, 'middle:'+middle, 'end:'+end, 'data.length:'+data.length, 'limit:'+limit);
+      debugger
+      if (data.length > 2){
+        for (var i = middle; i < end; i++) {
+          if (innerBox.children[i].classList.contains('yellow')) {
+            innerBox.children[i].classList.remove('yellow');
+            innerBox.children[i].classList.add('grey');
+          }
+        }
+      }
+    }, time * counter);
+    counter++;
+  })(data.slice(), start, middle, end);
+
+
+  if (data.length > 1) {
+
+    (function(data, start, middle, end) {
+      setTimeout(function() {
+        console.log('3. ', 'data:'+data, 'start:'+start, 'middle:'+middle, 'end:'+end, 'data.length:'+data.length, 'limit:'+limit);
+        debugger
+        if (data.length > 2){
+          for (var i = start; i < middle; i++) {
+            if (innerBox.children[i].classList.contains('grey')) {
+              innerBox.children[i].classList.remove('grey');
+              innerBox.children[i].classList.add('yellow');
+            }
+          }
+        }
+      }, time * counter);
+      counter++;
+    })(data.slice(), start, middle, end);
+
+    (function(data, start, middle, end) {
+      setTimeout(function() {
+        console.log('3-2. ', 'data:'+data, 'start:'+start, 'middle:'+middle, 'end:'+end, 'data.length:'+data.length, 'limit:'+limit);
+        debugger
+        if (data.length > 2) {
+          for (var i = start; i < middle; i++) {
+            if (innerBox.children[i].classList.contains('moveLeftForMerge2')) {
+              innerBox.children[i].classList.remove('moveLeftForMerge2');
+              innerBox.children[i].classList.add('moveLeftForMerge3');
+            } else if (innerBox.children[i].classList.contains('moveLeftForMerge1')) {
+              innerBox.children[i].classList.remove('moveLeftForMerge1');
+              innerBox.children[i].classList.add('moveLeftForMerge2');
+            } else {
+              innerBox.children[i].classList.add('moveLeftForMerge1');
+            }
+          }
+        }
+      }, time * counter);
+      counter++;
+    })(data.slice(), start, middle, end);
+
+    var left = mergeSort(data.slice(start, middle));
+
+    (function(data, start, middle, end) {
+      setTimeout(function() {
+        console.log('4. ', 'data:'+data, 'start:'+start, 'middle:'+middle, 'end:'+end);
+        debugger
+      }, time * counter);
+      counter++;
+    })(data.slice(), start, middle, end);
+
+
+    var right = mergeSort(data.slice(middle, end));
+
+    (function(data, start, middle, end) {
+      setTimeout(function() {
+        console.log('5. ', 'data:'+data, 'start:'+start, 'middle:'+middle, 'end:'+end);
+        debugger
+      }, time * counter);
+      counter++;
+    })(data.slice(), start, middle, end);
+
+
+    return combine(left, right);
+
+  }
+
+  (function(data, start, end) {
+    setTimeout(function() {
+      console.log('6. ', 'data:'+data, 'start:'+start, 'middle:'+middle, 'end:'+end);
+      debugger
+    }, time * counter);
+    counter++;
+  })(data.slice(), start, end);
+
+
+}
+
+function combine(left, right) {
+  var temp = [];
+
+  (function(data, temp, left, right) {
+    setTimeout(function() {
+      console.log('7. ', 'data:'+data, 'left:'+left, 'right:'+right, 'temp:'+temp);
+      debugger
+      // for (var i = 0; i < data.length; i++) {
+      //   for (var j = 0; j < left.length; j++) {
+      //     if (data[i] === left[j]) {
+      //       innerBox.children[i].classList.add('combineLeft');
+      //     } else if (data[i] === right[j]) {
+      //       innerBox.children[i].classList.add('combineRight');
+      //     }
+      //   }
+      // }
+    }, time * counter);
+    counter++;
+  })(data.slice(), temp.slice(), left.slice(), right.slice());
+
+
+  while (left.length >= 1 && right.length >= 1 ) {
+
+    (function(data, temp, left, right) {
+      setTimeout(function() {
+        console.log('8. left,right[0] 하이라이트', 'data:'+data, 'temp:'+temp, 'left:'+left, 'right:'+right);
+        debugger
+        for (var i = 0; i < data.length; i++) {
+          if (data[i] === left[0]) {
+            innerBox.children[i].classList.remove('yellow');
+            innerBox.children[i].classList.add('deepYellow');
+          }
+          if (data[i] === right[0]) {
+            innerBox.children[i].classList.remove('yellow');
+            innerBox.children[i].classList.add('deepYellow');
+          }
+        }
+      }, time * counter);
+      counter++;
+    })(data.slice(), temp.slice(), left.slice(), right.slice());
+
+
+
+    if (left[0] < right[0]) {
+
+      (function(data, temp, left, right) {
+        setTimeout(function() {
+          console.log('9. left가 작으면 left 이동', 'data:'+data, 'left:'+left, 'right:'+right, 'temp:'+temp);
+          debugger
+        }, time * counter);
+        counter++;
+      })(data.slice(), temp.slice(), left.slice(), right.slice());
+
+      temp.push(left.shift());
+
+    } else {
+
+      (function(data, temp, left, right) {
+        setTimeout(function() {
+          console.log('10. right가 작으면 right 이동', 'data:'+data, 'left:'+left, 'right:'+right, 'temp:'+temp);
+          debugger
+        }, time * counter);
+        counter++;
+      })(data.slice(), temp.slice(), left.slice(), right.slice());
+
+      temp.push(right.shift());
+    }
+  }
+  if (left.length) {
+    temp = temp.concat(left);
+
+    (function(data, temp, left, right) {
+      setTimeout(function() {
+        debugger
+        console.log('11. 맨처음엔 10이나11', 'data:'+data, 'left:'+left, 'right:'+right, 'temp:'+temp);
+      }, time * counter);
+      counter++;
+    })(data.slice(), temp.slice(), left.slice(), right.slice());
+
+  } else if (right.length) {
+    temp = temp.concat(right);
+
+    (function(data, temp, left, right) {
+      setTimeout(function() {
+        debugger
+        console.log('12. 맨처음엔 10이나11', 'data:'+data, 'left:'+left, 'right:'+right, 'temp:'+temp);
+      }, time * counter);
+      counter++;
+    })(data.slice(), temp.slice(), left.slice(), right.slice());
+
+  }
+
+  (function(data, temp, left, right) {
+    setTimeout(function() {
+      debugger
+      console.log('13. ', 'temp:'+temp);
+    }, time * counter);
+    counter++;
+  })(data.slice(), temp.slice(), left.slice(), right.slice());
+
+  return temp;
+
+}
+
+// while (queue.length) {
+//   var data = queue.shift();
+//
+//   (function (data) {
+//     setTimeout(function() {
+//       visualizeMergeSort(data);
+//     }, time * counter);
+//   })(data);
+//
+//   count++;
+// }
+//
+// function visualizeMergeSort(data) {
+//   switch (data.type) {
+//     case '쪼개기':
+//       divideData(data.target);
+//       break;
+//     default:
+//       break;
+//   }
+// }
+//
+// function divideData(data) {
+//   for (var i = 0; i < data.length; i++) {
+//     innerBox.children[i].classList.add('jump');
+//   }
+// }

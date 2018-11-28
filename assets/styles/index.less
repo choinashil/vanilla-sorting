@@ -33,10 +33,9 @@ html, body {
   border-radius: 40px;
   cursor: pointer;
   font-weight: 300;
-}
-
-.count:hover {
-  background-color: #249569;
+  &:hover {
+    background-color: #249569;
+  }
 }
 
 .lightGreen {
@@ -51,53 +50,48 @@ html, body {
   width: 100%;
   margin-bottom: 15px;
   padding: 0 176px;
-}
-
-.selectNum input {
-  width: 150px;
-  font-size: 20px;
-  padding: 5px;
-  outline: none;
-  text-align: right;
-  font-weight: 300;
-}
-
-.selectNum button {
-  font-size: 15px;
-  padding: 9px;
-  text-align: center;
-  font-weight: 100;
-  outline: none;
-  border: none;
-  background-color: #f69090;
-  color: #fff;
-  cursor: pointer;
-  margin: auto;
-}
-
-.selectNum button:hover {
-  background-color: #dd6060;
+  & input {
+    width: 150px;
+    font-size: 20px;
+    padding: 5px;
+    outline: none;
+    text-align: right;
+    font-weight: 300;
+  }
+  & button {
+    font-size: 15px;
+    padding: 9px;
+    text-align: center;
+    font-weight: 100;
+    outline: none;
+    border: none;
+    background-color: #f69090;
+    color: #fff;
+    cursor: pointer;
+    margin: auto;
+    &:hover {
+      background-color: #dd6060;
+    }
+  }
 }
 
 .selectSort {
   margin-bottom: 15px;
   padding: 0 35px;
-}
-
-.selectSort div {
-  width: 130px;
-  padding: 10px;
-  text-align: center;
-  font-weight: 300;
-  display: inline-block;
-  color: #fff;
-  border-radius: 20px;
-  cursor: pointer;
-  margin-right: 5px;
-}
-
-.selectSort div:hover {
-  background-color: #234ca4;
+  & div {
+    width: 130px;
+    padding: 10px;
+    text-align: center;
+    font-weight: 300;
+    display: inline-block;
+    color: #fff;
+    border-radius: 20px;
+    cursor: pointer;
+    margin-right: 5px;
+    &:hover {
+      background-color: #234ca4;
+    }
+  }
 }
 
 .lightBlue {
@@ -122,11 +116,10 @@ html, body {
   color: #a4a4a4;
   cursor: pointer;
   margin-bottom: 15px;
-}
-
-.start:hover {
-  border: 1px solid #ffd02a;
-  color: #ffd02a;
+  &:hover {
+    border: 1px solid #ffd02a;
+    color: #ffd02a;
+  }
 }
 
 .content {
@@ -135,14 +128,20 @@ html, body {
 }
 
 .innerBox {
-  height: 240px;
   margin: auto;
   position: relative;
+  // border: 1px solid #888;
+}
+
+.innerBoxHeight {
+  height: 240px;
+}
+
+.innerBoxHeightForMergeSort {
+  height: 140px;
 }
 
 .inputBar {
-  width: 50px;
-  height: 50px;
   display: inline-block;
   margin-right: 5px;
   line-height: 50px;
@@ -150,6 +149,14 @@ html, body {
   position: absolute;
   bottom: 0px;
   transition: all ease 0.4s;
+}
+
+.inputBarWidth {
+  width: 50px;
+}
+
+.inputBarWidthForMergeSort {
+  width: 25px;
 }
 
 .inputNumBox {
@@ -167,6 +174,47 @@ html, body {
 .left7 {left: 7*55px;}
 .left8 {left: 8*55px;}
 .left9 {left: 9*55px;}
+
+.moveLeftForMerge1 {
+  transform: translate(-25px, 50px);
+}
+
+.moveLeftForMerge2 {
+  transform: translate(-50px, 100px);
+}
+
+.moveLeftForMerge3 {
+  transform: translate(-75px, 150px);
+}
+
+.combineLeft {
+  transform: translate(-100px, 150px);
+}
+
+.combineRight {
+  transform: translate(15px, 150px);
+}
+
+
+
+
+
+// .mergeLeft0 {left: 0px;}
+// .mergeLeft1 {left: 1*30px;}
+// .mergeLeft2 {left: 2*30px;}
+// .mergeLeft3 {left: 3*30px;}
+// .mergeLeft4 {left: 4*30px;}
+// .mergeLeft5 {left: 5*30px;}
+// .mergeLeft6 {left: 6*30px;}
+// .mergeLeft7 {left: 7*30px;}
+// .mergeLeft8 {left: 8*30px;}
+// .mergeLeft9 {left: 9*30px;}
+// .mergeLeft10 {left: 10*30px;}
+// .mergeLeft11 {left: 11*30px;}
+// .mergeLeft12 {left: 12*30px;}
+// .mergeLeft10 {left: 13*30px;}
+// .mergeLeft11 {left: 14*30px;}
+// .mergeLeft12 {left: 15*30px;}
 
 .grey {
   background-color: #c7c7c7;
