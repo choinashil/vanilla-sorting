@@ -45,27 +45,12 @@ selection.addEventListener('click', setSorting.bind(null, selectionSort));
 var merge = document.querySelector('.merge');
 merge.addEventListener('click', setSorting.bind(null, mergeSort));
 
-  // sizeControlForMergeSort();
-// function sizeControlForMergeSort() {
-//   innerBox.style.width = (limit * 31) + 'px';
-//   innerBox.classList.remove('innerBoxHeight');
-//   innerBox.classList.add('innerBoxHeightForMergeSort');
-//   for (var i = 0; i < innerBox.childElementCount; i++) {
-//     innerBox.children[i].classList.remove('left' + i);
-//     innerBox.children[i].classList.add('mergeLeft' + i);
-//     innerBox.children[i].classList.remove('inputBarWidth');
-//     innerBox.children[i].classList.add('inputBarWidthForMergeSort');
-//     innerBox.children[i].height = (data[i] * 5) + 'px';
-//   }
-// }
-
 var content = document.querySelector('.content');
 var innerBox = document.querySelector('.innerBox');
 var inputNumBox = document.querySelector('.inputNumBox');
 
 var start = document.querySelector('.start');
 start.addEventListener('click', startSorting);
-
 
 function setArraySize(e) {
   if (!innerBox.childElementCount) {
@@ -78,7 +63,6 @@ function setArraySize(e) {
     e.target.classList.remove('lightGreen');
     e.target.classList.add('green');
     limit = e.target.textContent;
-    console.log(limit);
     setRange = true;
     innerBox.style.width = (limit * 56) + 'px';
   }
@@ -166,7 +150,6 @@ function startSorting(){
   }
 }
 
-
 var time = 350;
 var counter = 0;
 
@@ -194,7 +177,6 @@ function bubbleSort(data) {
         })(j);
 
       } else {
-
         (function(j) {
           setTimeout(function() {
             addColorInBubbleSort(j);
@@ -208,27 +190,21 @@ function bubbleSort(data) {
           }, time * counter);
           counter++;
         })(j);
-
       }
-
       (function(j) {
         setTimeout(function() {
           resetForNextComparison(j);
         }, time * counter);
         counter++;
       })(j);
-
     }
-
     (function(j) {
       setTimeout(function() {
         changeColorOfMax(j);
       }, time * counter);
       counter++;
     })(j);
-
   }
-
   (function(j) {
     setTimeout(function() {
       addEffectToMin(j);
@@ -301,7 +277,6 @@ function removeEffectFromMin(j) {
   innerBox.children[j].classList.remove('bounce');
 }
 
-
 function insertionSort(data) {
   var time = 300;
   for (var i = 1; i < data.length; i++) {
@@ -341,7 +316,6 @@ function insertionSort(data) {
         })(j);
 
       } else {
-
         (function(j) {
           setTimeout(function() {
             addColorInInsertionSort(j);
@@ -366,16 +340,13 @@ function insertionSort(data) {
         break;
       }
     }
-
     (function(j) {
       setTimeout(function() {
         resetAll(j);
       }, time * counter);
       counter++;
     })(j);
-
   }
-
   (function(j) {
     setTimeout(function() {
       finishInsertionSort(j);
@@ -454,7 +425,6 @@ function finishInsertionSort(j) {
   innerBox.children[j + 1].classList.add('yellow');
 }
 
-
 function selectionSort(data){
   for (var i = 0; i < data.length - 1; i++) {
 
@@ -479,7 +449,6 @@ function selectionSort(data){
         min = j;
       }
     }
-
     (function(i, min) {
       setTimeout(function() {
         addColorForComparison(i, min);
@@ -511,9 +480,7 @@ function selectionSort(data){
       }, time * counter);
       counter++;
     })(i);
-
   }
-
   (function(i, min) {
     setTimeout(function() {
       addEffect(i, min);
@@ -601,251 +568,3 @@ function addEffect(i, min) {
 function removeEffect(i) {
   innerBox.children[i].classList.remove('jump');
 }
-
-
-var queue = [];
-
-function mergeSort(data) {
-  // console.log('0. ', '시작')
-  if (data.length === 1) {
-
-  //   (function(data, start, middle, end) {
-  //     setTimeout(function() {
-  //       console.log('1. 하나만 남았을때', 'data:'+data, 'start:'+start, 'middle:'+middle, 'end:'+end);
-  //       debugger
-  //     }, time * counter);
-  //     counter++;
-  //   })(data.slice(), start, middle, end);
-  //
-  //   return data;
-  // }
-
-
-  var start = 0;
-  var end = data.length;
-  var middle = Math.ceil((start + end) / 2);
-
-  (function(data, start, middle, end) {
-    setTimeout(function() {
-      console.log('2. ', 'data:'+data, 'start:'+start, 'middle:'+middle, 'end:'+end, 'data.length:'+data.length, 'limit:'+limit);
-      debugger
-      if (data.length > 2){
-        for (var i = middle; i < end; i++) {
-          if (innerBox.children[i].classList.contains('yellow')) {
-            innerBox.children[i].classList.remove('yellow');
-            innerBox.children[i].classList.add('grey');
-          }
-        }
-      }
-    }, time * counter);
-    counter++;
-  })(data.slice(), start, middle, end);
-
-
-  if (data.length > 1) {
-
-    (function(data, start, middle, end) {
-      setTimeout(function() {
-        console.log('3. ', 'data:'+data, 'start:'+start, 'middle:'+middle, 'end:'+end, 'data.length:'+data.length, 'limit:'+limit);
-        debugger
-        if (data.length > 2){
-          for (var i = start; i < middle; i++) {
-            if (innerBox.children[i].classList.contains('grey')) {
-              innerBox.children[i].classList.remove('grey');
-              innerBox.children[i].classList.add('yellow');
-            }
-          }
-        }
-      }, time * counter);
-      counter++;
-    })(data.slice(), start, middle, end);
-
-    (function(data, start, middle, end) {
-      setTimeout(function() {
-        console.log('3-2. ', 'data:'+data, 'start:'+start, 'middle:'+middle, 'end:'+end, 'data.length:'+data.length, 'limit:'+limit);
-        debugger
-        if (data.length > 2) {
-          for (var i = start; i < middle; i++) {
-            if (innerBox.children[i].classList.contains('moveLeftForMerge2')) {
-              innerBox.children[i].classList.remove('moveLeftForMerge2');
-              innerBox.children[i].classList.add('moveLeftForMerge3');
-            } else if (innerBox.children[i].classList.contains('moveLeftForMerge1')) {
-              innerBox.children[i].classList.remove('moveLeftForMerge1');
-              innerBox.children[i].classList.add('moveLeftForMerge2');
-            } else {
-              innerBox.children[i].classList.add('moveLeftForMerge1');
-            }
-          }
-        }
-      }, time * counter);
-      counter++;
-    })(data.slice(), start, middle, end);
-
-    var left = mergeSort(data.slice(start, middle));
-
-    (function(data, start, middle, end) {
-      setTimeout(function() {
-        console.log('4. ', 'data:'+data, 'start:'+start, 'middle:'+middle, 'end:'+end);
-        debugger
-      }, time * counter);
-      counter++;
-    })(data.slice(), start, middle, end);
-
-
-    var right = mergeSort(data.slice(middle, end));
-
-    (function(data, start, middle, end) {
-      setTimeout(function() {
-        console.log('5. ', 'data:'+data, 'start:'+start, 'middle:'+middle, 'end:'+end);
-        debugger
-      }, time * counter);
-      counter++;
-    })(data.slice(), start, middle, end);
-
-
-    return combine(left, right);
-
-  }
-
-  (function(data, start, end) {
-    setTimeout(function() {
-      console.log('6. ', 'data:'+data, 'start:'+start, 'middle:'+middle, 'end:'+end);
-      debugger
-    }, time * counter);
-    counter++;
-  })(data.slice(), start, end);
-
-
-}
-
-function combine(left, right) {
-  var temp = [];
-
-  (function(data, temp, left, right) {
-    setTimeout(function() {
-      console.log('7. ', 'data:'+data, 'left:'+left, 'right:'+right, 'temp:'+temp);
-      debugger
-      // for (var i = 0; i < data.length; i++) {
-      //   for (var j = 0; j < left.length; j++) {
-      //     if (data[i] === left[j]) {
-      //       innerBox.children[i].classList.add('combineLeft');
-      //     } else if (data[i] === right[j]) {
-      //       innerBox.children[i].classList.add('combineRight');
-      //     }
-      //   }
-      // }
-    }, time * counter);
-    counter++;
-  })(data.slice(), temp.slice(), left.slice(), right.slice());
-
-
-  while (left.length >= 1 && right.length >= 1 ) {
-
-    (function(data, temp, left, right) {
-      setTimeout(function() {
-        console.log('8. left,right[0] 하이라이트', 'data:'+data, 'temp:'+temp, 'left:'+left, 'right:'+right);
-        debugger
-        for (var i = 0; i < data.length; i++) {
-          if (data[i] === left[0]) {
-            innerBox.children[i].classList.remove('yellow');
-            innerBox.children[i].classList.add('deepYellow');
-          }
-          if (data[i] === right[0]) {
-            innerBox.children[i].classList.remove('yellow');
-            innerBox.children[i].classList.add('deepYellow');
-          }
-        }
-      }, time * counter);
-      counter++;
-    })(data.slice(), temp.slice(), left.slice(), right.slice());
-
-
-
-    if (left[0] < right[0]) {
-
-      (function(data, temp, left, right) {
-        setTimeout(function() {
-          console.log('9. left가 작으면 left 이동', 'data:'+data, 'left:'+left, 'right:'+right, 'temp:'+temp);
-          debugger
-        }, time * counter);
-        counter++;
-      })(data.slice(), temp.slice(), left.slice(), right.slice());
-
-      temp.push(left.shift());
-
-    } else {
-
-      (function(data, temp, left, right) {
-        setTimeout(function() {
-          console.log('10. right가 작으면 right 이동', 'data:'+data, 'left:'+left, 'right:'+right, 'temp:'+temp);
-          debugger
-        }, time * counter);
-        counter++;
-      })(data.slice(), temp.slice(), left.slice(), right.slice());
-
-      temp.push(right.shift());
-    }
-  }
-  if (left.length) {
-    temp = temp.concat(left);
-
-    (function(data, temp, left, right) {
-      setTimeout(function() {
-        debugger
-        console.log('11. 맨처음엔 10이나11', 'data:'+data, 'left:'+left, 'right:'+right, 'temp:'+temp);
-      }, time * counter);
-      counter++;
-    })(data.slice(), temp.slice(), left.slice(), right.slice());
-
-  } else if (right.length) {
-    temp = temp.concat(right);
-
-    (function(data, temp, left, right) {
-      setTimeout(function() {
-        debugger
-        console.log('12. 맨처음엔 10이나11', 'data:'+data, 'left:'+left, 'right:'+right, 'temp:'+temp);
-      }, time * counter);
-      counter++;
-    })(data.slice(), temp.slice(), left.slice(), right.slice());
-
-  }
-
-  (function(data, temp, left, right) {
-    setTimeout(function() {
-      debugger
-      console.log('13. ', 'temp:'+temp);
-    }, time * counter);
-    counter++;
-  })(data.slice(), temp.slice(), left.slice(), right.slice());
-
-  return temp;
-
-}
-
-// while (queue.length) {
-//   var data = queue.shift();
-//
-//   (function (data) {
-//     setTimeout(function() {
-//       visualizeMergeSort(data);
-//     }, time * counter);
-//   })(data);
-//
-//   count++;
-// }
-//
-// function visualizeMergeSort(data) {
-//   switch (data.type) {
-//     case '쪼개기':
-//       divideData(data.target);
-//       break;
-//     default:
-//       break;
-//   }
-// }
-//
-// function divideData(data) {
-//   for (var i = 0; i < data.length; i++) {
-//     innerBox.children[i].classList.add('jump');
-//   }
-// }
